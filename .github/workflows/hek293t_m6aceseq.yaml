@@ -15,6 +15,12 @@ jobs:
       - name: Pull Down Needed docker image
         run: |
           docker pull btrspg/ensembldb:latest
+      - name: Prepare the Needed data
+        run: |
+          wget https://ftp.ensembl.org/pub/release-104/gtf/homo_sapiens/Homo_sapiens.GRCh38.104.gtf.gz
+          gzip -d Homo_sapiens.GRCh38.104.gtf.gz
+      - name: Covert
+        run: |
           docker run --rm -w `pwd` -v `pwd`:`pwd` btrspg/ensembldb:latest bash -c "Rscript convert_genomic2transcriptomic.R"
       - name: push to the remote
         run: |
