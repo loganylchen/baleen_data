@@ -1,0 +1,28 @@
+name: get the hek293t cell line m6ace-seq results
+
+on:
+  push:
+  release:
+  workflow_dispatch:
+
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Pull Down Needed docker image
+        run: |
+          docker pull btrspg/ensembldb:latest
+          docker run --rm -w `pwd` -v `pwd`:`pwd` btrspg/ensembldb:latest bash -c "Rscript convert_genomic2transcriptomic.R"
+      - name: push to the remote
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add hek293t_m6ace ; git commit -m "`date`: convert to transcriptomic coordinates"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          branch: ${{ github.ref }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
