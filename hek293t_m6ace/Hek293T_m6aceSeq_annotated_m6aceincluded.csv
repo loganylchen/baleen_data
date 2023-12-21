@@ -1,0 +1,1 @@
+group	group_name	start	end	width	tx_id	exon_id	exon_rank	seq_start	seq_end	seq_name	seq_strand	Chr	Start	End	Strand	WT rep1 RML	WT rep2 RML	WT rep3 RML	Mettl3-KO rep1 RML	Mettl3-KO rep2 RML	Mettl3-KO rep3 RML	Gene	Annotation	Motif	WT DESeq2 padj	Mettl3-KO DESeq2 padj	Unnamed: 15	Unnamed: 16	Unnamed: 17	Unnamed: 18
