@@ -30,11 +30,15 @@ jobs:
           wget https://ftp.ensembl.org/pub/release-104/gtf/homo_sapiens/Homo_sapiens.GRCh38.104.gtf.gz
           gzip -d Homo_sapiens.GRCh38.104.gtf.gz
       - name: Covert
+        if: ${{ hashFiles('hek293t_m6ace/Hek293T_m6aceSeq_results_annotated.csv') == '' }}
         run: |
           docker run --rm -w `pwd` -v `pwd`:`pwd` btrspg/ensembldb:latest bash -c "Rscript convert_genomic2transcriptomic.R"
-          
+      - name: Covert 2
+        if: ${{ hashFiles('hek293t_m6ace/Hek293T_m6aceSeq_annotated_m6aceincluded.bed') == '' }}
+        run: |
           python get_final_benchmark_hek293t.py
       - name: Get Bed files
+        if: ${{ hashFiles('hek293t_m6ace/hek293t_m6ace/Hek293T.bed') == '' }}
         run: |
           ./bin/bedtools merge hek293t_m6ace/Hek293T_m6aceSeq_annotated_m6aceincluded.bed > hek293t_m6ace/Hek293T.bed
       - name: push to the remote
