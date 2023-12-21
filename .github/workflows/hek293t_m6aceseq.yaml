@@ -40,7 +40,7 @@ jobs:
       - name: Get Bed files
         if: ${{ hashFiles('hek293t_m6ace/hek293t_m6ace/Hek293T.bed') == '' }}
         run: |
-          ./bin/bedtools merge hek293t_m6ace/Hek293T_m6aceSeq_annotated_m6aceincluded.bed > hek293t_m6ace/Hek293T.bed
+          ./bin/bedtools merge -i hek293t_m6ace/Hek293T_m6aceSeq_annotated_m6aceincluded.bed > hek293t_m6ace/Hek293T.bed
       - name: push to the remote
         run: |
           git config --global user.name "github-actions[bot]"
