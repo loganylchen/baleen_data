@@ -22,6 +22,19 @@ jobs:
       - name: Covert
         run: |
           docker run --rm -w `pwd` -v `pwd`:`pwd` btrspg/ensembldb:latest bash -c "Rscript convert_genomic2transcriptomic.R"
+      - name: Get merged
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+        run: |
+          pip install pandas
+          python get_final_benchmark_hek293t.py
+      - name: Get Bed files
+        run: |
+          mkdir bin/
+          wget https://github.com/arq5x/bedtools2/releases/download/v2.31.0/bedtools.static -O bin/bedtools
+          chmod +x bin/bedtools
+          ./bin/bedtools merge hek293t_m6ace/Hek293T_m6aceSeq_annotated_m6aceincluded.bed > hek293t_m6ace/Hek293T.bed
       - name: push to the remote
         run: |
           git config --global user.name "github-actions[bot]"
