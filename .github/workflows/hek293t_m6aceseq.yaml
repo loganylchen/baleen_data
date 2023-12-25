@@ -3,7 +3,7 @@ name: get the hek293t cell line m6ace-seq results
 on:
   push:
     paths:
-      - hek293t_m6ace
+      - hek293t_m6ace/*
       - convert_genomic2transcriptomic.R
       - get_final_benchmark_hek293t.py
   release:
