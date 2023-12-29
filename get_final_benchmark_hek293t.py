@@ -11,7 +11,8 @@ hek293t_m6ace_raw_df = pd.read_csv('hek293t_m6ace/Hek293T_m6aceSeq_results.csv')
 print("Merging annotated data and raw data with m6a results")
 merged_data = pd.merge(hek293t_m6ace_df, hek293t_m6ace_raw_df, left_on=['seq_name', 'seq_start'],
                        right_on=['Chr', 'Start'], how='left')
-merged_data.to_csv('hek293t_m6ace/Hek293T_m6aceSeq_annotated_m6aceincluded.csv', sep='\t', index=False)
+merged_data.dropna(axis=1,how='all',inplace=True)
+merged_data.to_csv('hek293t_m6ace/Hek293T_m6aceSeq_annotated_m6aceincluded.tsv', sep='\t', index=False)
 
 print("get the bed region!!! expand 6bp upstream and 7bp downstream")
 
