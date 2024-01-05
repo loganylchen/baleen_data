@@ -1,2 +1,6 @@
 pandas
 pybedtools
+jupyter
+seaborn
+matplotlib
+openpyxl
