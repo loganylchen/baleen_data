@@ -31,7 +31,7 @@ def main():
     contigs = df['Chr'].unique()
     commands = [f'Rscript convert_genomic2transcriptomic.R {contig}' for contig in contigs]
     os.makedirs('hek293t_m6ace/tmp', exist_ok=True)
-    with Pool(10) as pool:
+    with Pool(50) as pool:
         pool.map(run_command, commands)
         pool.close()
         pool.join()
@@ -39,6 +39,7 @@ def main():
     files = glob.glob('hek293t_m6ace/tmp/tmp_*.csv')
     df = pd.concat([pd.read_csv(f) for f in files])
     df.to_csv('hek293t_m6ace/Hek293T_m6aceSeq_results_annotated.csv', index=False)
+    run_command('python get_final_benchmark_hek293t.py')
 
 if __name__ == '__main__':
     main()
