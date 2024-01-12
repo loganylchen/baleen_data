@@ -39,3 +39,6 @@ def main():
     files = glob.glob('hek293t_m6ace/tmp/tmp_*.csv')
     df = pd.concat([pd.read_csv(f) for f in files])
     df.to_csv('hek293t_m6ace/Hek293T_m6aceSeq_results_annotated.csv', index=False)
+
+if __name__ == '__main__':
+    main()
