@@ -5,4 +5,4 @@ bin/
 Homo_sapiens.GRCh38.104.gtf
 Homo_sapiens.GRCh38.104.sqlite
 baleen_data.sif
-ensembldb.rds
+working.RData
