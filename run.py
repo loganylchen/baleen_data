@@ -31,7 +31,7 @@ def main():
     contigs = df['Chr'].unique()
     commands = [f'Rscript convert_genomic2transcriptomic.R {contig}' for contig in contigs]
     os.makedirs('hek293t_m6ace/tmp', exist_ok=True)
-    with Pool(10) as pool:
+    with Pool(50) as pool:
         pool.map(run_command, commands)
         pool.close()
         pool.join()
