@@ -40,6 +40,7 @@ def main():
     df = pd.concat([pd.read_csv(f) for f in files])
     df.to_csv('hek293t_m6ace/Hek293T_m6aceSeq_results_annotated.csv', index=False)
     run_command('python get_final_benchmark_hek293t.py')
+    run_command('bedtools merge -i hek293t_m6ace/Hek293T_m6aceSeq_annotated_m6aceincluded.bed > hek293t_m6ace/Hek293T.bed')
 
 if __name__ == '__main__':
     main()
