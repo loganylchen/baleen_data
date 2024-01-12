@@ -6,6 +6,6 @@ ENV PATH /opt/bin:$PATH
 RUN mkdir -p /opt/bin && \
     wget https://github.com/arq5x/bedtools2/releases/download/v2.31.0/bedtools.static -O /opt/bin/bedtools && \
     chmod +x /opt/bin/* && \
-    R -e 'BiocManager::install("ensembldb");install.packages("tplyr");IRkernel::installspec(name = "VSCODER", displayname = "VSCODER",user=FALSE)'
+    R -e 'BiocManager::install("ensembldb");install.packages("dplyr");IRkernel::installspec(name = "VSCODER", displayname = "VSCODER",user=FALSE)'
 ADD requirements.txt /tmp/requirements.txt
 RUN pip3 install -r /tmp/requirements.txt && rm /tmp/requirements.txt

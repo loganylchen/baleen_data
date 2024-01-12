@@ -1,6 +1,6 @@
 args<- commandArgs(trailingOnly = TRUE)
 library(ensembldb)
-library(tplyr)
+library(dplyr)
 contig <- args[1]
 print(paste0('Working on ',contig))
 load('working.RData')
