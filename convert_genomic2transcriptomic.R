@@ -1,7 +1,8 @@
 library(ensembldb)
-gtf<-'Homo_sapiens.GRCh38.104.gtf'
-DB <- ensDbFromGtf(gtf=gtf)
-EDB<-EnsDb(DB)
+# gtf<-'Homo_sapiens.GRCh38.104.gtf'
+# DB <- ensDbFromGtf(gtf=gtf)
+# EDB<-EnsDb(DB)
+EDB <- readRDS('./ensembldb.rds')
 df <- read.csv('hek293t_m6ace/m6ace_hek293t_GT_extend.csv')
 grange_range <- makeGRangesFromDataFrame(df,seqnames.field=c('Chr'),start.field='Start',end.field='End',strand.field='Strand')
 transcript_loc <- genomeToTranscript(grange_range,EDB)
