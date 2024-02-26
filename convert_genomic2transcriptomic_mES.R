@@ -3,7 +3,7 @@ library(ensembldb)
 library(dplyr)
 contig <- args[1]
 print(paste0('Working on ',contig))
-load('working.RData')
+load('working_GRCm39.RData')
 EDB<-EnsDb(DB)
 df <- read.csv('good_region.bed',sep='\t',header=F)
 working_contig_df <- df %>% filter(Chr==contig)
