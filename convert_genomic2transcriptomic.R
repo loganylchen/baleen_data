@@ -5,7 +5,7 @@ contig <- args[1]
 print(paste0('Working on ',contig))
 load('working.RData')
 EDB<-EnsDb(DB)
-df <- read.csv('hek293t_m6ace/m6ace_hek293t_GT_extend.csv')
+df <- read.csv('hek293t_m6ace/m6ace_hek293t_GT.csv')
 working_contig_df <- df %>% filter(Chr==contig)
 grange_range <- makeGRangesFromDataFrame(working_contig_df,seqnames.field=c('Chr'),start.field='Start',end.field='End',strand.field='Strand')
 transcript_loc <- genomeToTranscript(grange_range,EDB)
