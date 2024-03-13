@@ -38,7 +38,7 @@ def main():
     hek293t_df['End'] = hek293t_df['End'].astype(int)
     hek293t_df['Strand'] = hek293t_df['Strand'].astype(str)
     hek293t_df['Chr'] = hek293t_df['Chr'].astype(str)
-    df.merge(hek293t_df,how='left',left_on=['seq_name','seq_start','seq_end','seq_strand'],right_on=['Chr','Start','End','Strand'])
+    df = df.merge(hek293t_df,how='left',left_on=['seq_name','seq_start','seq_end','seq_strand'],right_on=['Chr','Start','End','Strand'])
     df.to_csv(final_output, index=False)
     df['start'] = df['start'] - 6
     df['end'] = df['end'] + 7
