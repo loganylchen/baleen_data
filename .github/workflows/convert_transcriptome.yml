@@ -1,0 +1,51 @@
+name: Convert Genome to Transcriptome
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache Ensembl reference files
+        uses: actions/cache@v4
+        with:
+          path: |
+            Homo_sapiens.GRCh38.104.gtf
+            Homo_sapiens.GRCh38.dna.primary_assembly.fa
+            Homo_sapiens.GRCh38.dna.primary_assembly.fa.fai
+          key: ensembl-104-gtf-genome
+
+      - name: Build Docker image
+        run: docker build -f Dockerfile.analysis -t baleen-analysis .
+
+      - name: Run genome_to_transcriptome.py
+        run: |
+          docker run --rm -v "${{ github.workspace }}:/data" \
+            baleen-analysis python /data/genome_to_transcriptome.py
+
+      - name: Run validate_5mer.py
+        run: |
+          docker run --rm -v "${{ github.workspace }}:/data" \
+            baleen-analysis python /data/validate_5mer.py
+
+      - name: Fix file ownership
+        run: sudo chown -R "$(id -u):$(id -g)" .
+
+      - name: Commit transcriptome files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add hek293t/m6a/*_transcriptome.tsv
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update transcriptome TSV files (automated)"
+            git push
+          fi

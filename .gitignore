@@ -8,3 +8,6 @@ baleen_data.sif
 working.RData
 
 output/
+
+Homo_sapiens.GRCh38.dna.primary_assembly.fa
+Homo_sapiens.GRCh38.dna.primary_assembly.fa.fai
