@@ -20,7 +20,9 @@ jobs:
             Homo_sapiens.GRCh38.104.gtf
             Homo_sapiens.GRCh38.dna.primary_assembly.fa
             Homo_sapiens.GRCh38.dna.primary_assembly.fa.fai
-          key: ensembl-104-gtf-genome
+            transcriptome.fa
+            transcriptome.fa.fai
+          key: ensembl-104-gtf-genome-txome
 
       - name: Build Docker image
         run: docker build -f Dockerfile.analysis -t baleen-analysis .
@@ -34,6 +36,11 @@ jobs:
         run: |
           docker run --rm -v "${{ github.workspace }}:/data" \
             baleen-analysis python /data/validate_5mer.py
+
+      - name: Run validate_5mer_cross.py
+        run: |
+          docker run --rm -v "${{ github.workspace }}:/data" \
+            baleen-analysis python /data/validate_5mer_cross.py
 
       - name: Fix file ownership
         run: sudo chown -R "$(id -u):$(id -g)" .
