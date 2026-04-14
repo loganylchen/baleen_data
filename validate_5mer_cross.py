@@ -12,8 +12,11 @@ Requires gffread to build the transcriptome FASTA from genome + GTF.
 
 Usage:
     docker run --rm -v "$(pwd):/data" baleen-analysis python /data/validate_5mer_cross.py
+    docker run --rm -v "$(pwd):/data" baleen-analysis python /data/validate_5mer_cross.py \
+        --dirs hek293t/m5c hela/m5c hek293t/pseudo-u hela/pseudo-u a549/pseudo-u
 """
 
+import argparse
 import subprocess
 import sys
 import pandas as pd
@@ -36,7 +39,6 @@ GTF_FILE = "Homo_sapiens.GRCh38.104.gtf"
 TX_FASTA = "transcriptome.fa"
 
 DATA_DIR = Path("/data")
-M6A_DIR = DATA_DIR / "hek293t" / "m6a"
 
 COMP = str.maketrans("ACGTacgt", "TGCAtgca")
 
@@ -184,7 +186,18 @@ def validate_file(genome_fa, tx_fa, tx_tsv):
     return match, mismatch, skipped
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="Cross-validate 5-mers between genome and transcriptome FASTA")
+    parser.add_argument(
+        "--dirs", nargs="+", default=["hek293t/m6a"],
+        help="Directories to process (relative to /data). Default: hek293t/m6a",
+    )
+    return parser.parse_args()
+
+
 def main():
+    args = parse_args()
+
     print("=" * 60)
     print("CROSS-VALIDATION: genome FASTA vs transcriptome FASTA 5-mers")
     print("=" * 60)
@@ -206,11 +219,16 @@ def main():
     total_mismatch = 0
     total_skipped = 0
 
-    for tsv in sorted(M6A_DIR.glob("*_transcriptome.tsv")):
-        m, mm, s = validate_file(genome_fa, tx_fa, tsv)
-        total_match += m
-        total_mismatch += mm
-        total_skipped += s
+    for d in args.dirs:
+        target_dir = DATA_DIR / d
+        tx_files = sorted(target_dir.glob("*_transcriptome.tsv"))
+        if tx_files:
+            print(f"\n--- {d} ---")
+        for tsv in tx_files:
+            m, mm, s = validate_file(genome_fa, tx_fa, tsv)
+            total_match += m
+            total_mismatch += mm
+            total_skipped += s
 
     genome_fa.close()
     tx_fa.close()

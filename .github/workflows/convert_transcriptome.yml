@@ -27,32 +27,69 @@ jobs:
       - name: Build Docker image
         run: docker build -f Dockerfile.analysis -t baleen-analysis .
 
-      - name: Run genome_to_transcriptome.py
+      # --- Reorganize raw data ---
+      - name: Reorganize m5C data
+        run: |
+          docker run --rm -v "${{ github.workspace }}:/data" \
+            baleen-analysis python /data/reorganize_m5c.py
+
+      - name: Reorganize pseudo-U data
+        run: |
+          docker run --rm -v "${{ github.workspace }}:/data" \
+            baleen-analysis python /data/reorganize_pseudou.py
+
+      # --- Convert genome → transcriptome ---
+      - name: Convert m6A (hek293t)
         run: |
           docker run --rm -v "${{ github.workspace }}:/data" \
             baleen-analysis python /data/genome_to_transcriptome.py
 
-      - name: Run validate_5mer.py
+      - name: Convert m5C and pseudo-U
+        run: |
+          docker run --rm -v "${{ github.workspace }}:/data" \
+            baleen-analysis python /data/genome_to_transcriptome.py \
+              --dirs hek293t/m5c hela/m5c hek293t/pseudo-u hela/pseudo-u a549/pseudo-u
+
+      # --- Validate 5-mers ---
+      - name: Validate 5-mers (m6A)
         run: |
           docker run --rm -v "${{ github.workspace }}:/data" \
             baleen-analysis python /data/validate_5mer.py
 
-      - name: Run validate_5mer_cross.py
+      - name: Validate 5-mers (m5C + pseudo-U)
+        run: |
+          docker run --rm -v "${{ github.workspace }}:/data" \
+            baleen-analysis python /data/validate_5mer.py \
+              --dirs hek293t/m5c hela/m5c hek293t/pseudo-u hela/pseudo-u a549/pseudo-u
+
+      - name: Cross-validate 5-mers (m6A)
         run: |
           docker run --rm -v "${{ github.workspace }}:/data" \
             baleen-analysis python /data/validate_5mer_cross.py
 
+      - name: Cross-validate 5-mers (m5C + pseudo-U)
+        run: |
+          docker run --rm -v "${{ github.workspace }}:/data" \
+            baleen-analysis python /data/validate_5mer_cross.py \
+              --dirs hek293t/m5c hela/m5c hek293t/pseudo-u hela/pseudo-u a549/pseudo-u
+
       - name: Fix file ownership
         run: sudo chown -R "$(id -u):$(id -g)" .
 
-      - name: Commit transcriptome files
+      - name: Commit output files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add hek293t/m6a/*_transcriptome.tsv
+          git add \
+            hek293t/m6a/*_transcriptome.tsv \
+            hek293t/m5c/*_genome.tsv hek293t/m5c/*_transcriptome.tsv \
+            hela/m5c/*_genome.tsv hela/m5c/*_transcriptome.tsv \
+            hek293t/pseudo-u/*_genome.tsv hek293t/pseudo-u/*_transcriptome.tsv \
+            hela/pseudo-u/*_genome.tsv hela/pseudo-u/*_transcriptome.tsv \
+            a549/pseudo-u/*_genome.tsv a549/pseudo-u/*_transcriptome.tsv
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Update transcriptome TSV files (automated)"
+            git commit -m "Update genome and transcriptome TSV files (automated)"
             git push
           fi

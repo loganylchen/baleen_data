@@ -8,8 +8,11 @@ One genomic site may map to multiple transcripts (all mappings kept).
 Usage:
     docker build -f Dockerfile.analysis -t baleen-analysis .
     docker run --rm -v "$(pwd):/data" baleen-analysis python /data/genome_to_transcriptome.py
+    docker run --rm -v "$(pwd):/data" baleen-analysis python /data/genome_to_transcriptome.py \
+        --dirs hek293t/m5c hela/m5c hek293t/pseudo-u hela/pseudo-u a549/pseudo-u
 """
 
+import argparse
 import pandas as pd
 import pyranges as pr
 import numpy as np
@@ -22,7 +25,6 @@ from pathlib import Path
 GTF_URL = "https://ftp.ensembl.org/pub/release-104/gtf/homo_sapiens/Homo_sapiens.GRCh38.104.gtf.gz"
 GTF_FILE = "Homo_sapiens.GRCh38.104.gtf"
 DATA_DIR = Path("/data")
-M6A_DIR = DATA_DIR / "hek293t" / "m6a"
 
 
 def download_gtf():
@@ -182,17 +184,30 @@ def convert_file(genome_tsv, exons_df):
     return out_path
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="Convert genome TSVs to transcriptome coordinates")
+    parser.add_argument(
+        "--dirs", nargs="+", default=["hek293t/m6a"],
+        help="Directories to process (relative to /data). Default: hek293t/m6a",
+    )
+    return parser.parse_args()
+
+
 def main():
+    args = parse_args()
     gtf_path = download_gtf()
     exons_df = build_exon_models(gtf_path)
 
-    genome_files = sorted(M6A_DIR.glob("*_genome.tsv"))
-    print(f"\nFound {len(genome_files)} genome files:")
-    for f in genome_files:
-        print(f"  {f.name}")
+    for d in args.dirs:
+        target_dir = DATA_DIR / d
+        genome_files = sorted(target_dir.glob("*_genome.tsv"))
+        print(f"\n{'='*60}")
+        print(f"Directory: {d} — {len(genome_files)} genome files")
+        for f in genome_files:
+            print(f"  {f.name}")
 
-    for gf in genome_files:
-        convert_file(gf, exons_df)
+        for gf in genome_files:
+            convert_file(gf, exons_df)
 
     print(f"\n{'='*60}")
     print("All conversions complete.")

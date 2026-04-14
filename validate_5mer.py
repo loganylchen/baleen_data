@@ -7,8 +7,11 @@ For transcriptome files: use genomic_position to extract and verify.
 
 Usage:
     docker run --rm -v "$(pwd):/data" baleen-analysis python /data/validate_5mer.py
+    docker run --rm -v "$(pwd):/data" baleen-analysis python /data/validate_5mer.py \
+        --dirs hek293t/m5c hela/m5c hek293t/pseudo-u hela/pseudo-u a549/pseudo-u
 """
 
+import argparse
 import pandas as pd
 import pysam
 import urllib.request
@@ -22,7 +25,6 @@ GENOME_URL = (
 )
 GENOME_FILE = "Homo_sapiens.GRCh38.dna.primary_assembly.fa"
 DATA_DIR = Path("/data")
-M6A_DIR = DATA_DIR / "hek293t" / "m6a"
 
 COMP = str.maketrans("ACGTacgt", "TGCAtgca")
 
@@ -206,24 +208,39 @@ def validate_transcriptome_file(fa, tx_tsv):
         print(f"  Skipped: {skipped:,}")
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="Validate 5-mer motifs against genome FASTA")
+    parser.add_argument(
+        "--dirs", nargs="+", default=["hek293t/m6a"],
+        help="Directories to process (relative to /data). Default: hek293t/m6a",
+    )
+    return parser.parse_args()
+
+
 def main():
+    args = parse_args()
     fa_path = download_genome()
     fa = index_genome(fa_path)
     print(f"Genome loaded: {fa.nreferences} chromosomes")
 
-    # --- Validate genome files ---
-    print("\n" + "=" * 60)
-    print("GENOME FILE VALIDATION (Motif vs extracted 5-mer)")
-    print("=" * 60)
-    for tsv in sorted(M6A_DIR.glob("*_genome.tsv")):
-        validate_genome_file(fa, tsv)
+    for d in args.dirs:
+        target_dir = DATA_DIR / d
 
-    # --- Validate transcriptome files ---
-    print("\n" + "=" * 60)
-    print("TRANSCRIPTOME FILE VALIDATION (genomic_position → 5-mer)")
-    print("=" * 60)
-    for tsv in sorted(M6A_DIR.glob("*_transcriptome.tsv")):
-        validate_transcriptome_file(fa, tsv)
+        # --- Validate genome files ---
+        print("\n" + "=" * 60)
+        print(f"GENOME FILE VALIDATION — {d}")
+        print("=" * 60)
+        for tsv in sorted(target_dir.glob("*_genome.tsv")):
+            validate_genome_file(fa, tsv)
+
+        # --- Validate transcriptome files ---
+        tx_files = sorted(target_dir.glob("*_transcriptome.tsv"))
+        if tx_files:
+            print("\n" + "=" * 60)
+            print(f"TRANSCRIPTOME FILE VALIDATION — {d}")
+            print("=" * 60)
+            for tsv in tx_files:
+                validate_transcriptome_file(fa, tsv)
 
     fa.close()
     print("\nDone!")

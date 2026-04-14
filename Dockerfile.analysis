@@ -9,7 +9,8 @@ RUN apt-get update && \
         openpyxl \
         'upsetplot==0.9.0' \
         'pyranges<1.0' \
-        pysam && \
+        pysam \
+        pyliftover && \
     apt-get purge -y gcc g++ && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/*
