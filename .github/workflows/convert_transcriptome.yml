@@ -44,11 +44,12 @@ jobs:
           docker run --rm -v "${{ github.workspace }}:/data" \
             baleen-analysis python /data/genome_to_transcriptome.py
 
-      - name: Convert m5C and pseudo-U
+      - name: Convert all other modifications
         run: |
           docker run --rm -v "${{ github.workspace }}:/data" \
             baleen-analysis python /data/genome_to_transcriptome.py \
-              --dirs hek293t/m5c hela/m5c hek293t/pseudo-u hela/pseudo-u a549/pseudo-u
+              --dirs hek293t/m5c hela/m5c hek293t/pseudo-u hela/pseudo-u a549/pseudo-u \
+                     hek293t/m1a hek293t/m7g hela/m6a hela/m7g hela/nm a549/m6a a549/m7g
 
       # --- Validate 5-mers ---
       - name: Validate 5-mers (m6A)
@@ -56,22 +57,24 @@ jobs:
           docker run --rm -v "${{ github.workspace }}:/data" \
             baleen-analysis python /data/validate_5mer.py
 
-      - name: Validate 5-mers (m5C + pseudo-U)
+      - name: Validate 5-mers (all other)
         run: |
           docker run --rm -v "${{ github.workspace }}:/data" \
             baleen-analysis python /data/validate_5mer.py \
-              --dirs hek293t/m5c hela/m5c hek293t/pseudo-u hela/pseudo-u a549/pseudo-u
+              --dirs hek293t/m5c hela/m5c hek293t/pseudo-u hela/pseudo-u a549/pseudo-u \
+                     hek293t/m1a hek293t/m7g hela/m6a hela/m7g hela/nm a549/m6a a549/m7g
 
       - name: Cross-validate 5-mers (m6A)
         run: |
           docker run --rm -v "${{ github.workspace }}:/data" \
             baleen-analysis python /data/validate_5mer_cross.py
 
-      - name: Cross-validate 5-mers (m5C + pseudo-U)
+      - name: Cross-validate 5-mers (all other)
         run: |
           docker run --rm -v "${{ github.workspace }}:/data" \
             baleen-analysis python /data/validate_5mer_cross.py \
-              --dirs hek293t/m5c hela/m5c hek293t/pseudo-u hela/pseudo-u a549/pseudo-u
+              --dirs hek293t/m5c hela/m5c hek293t/pseudo-u hela/pseudo-u a549/pseudo-u \
+                     hek293t/m1a hek293t/m7g hela/m6a hela/m7g hela/nm a549/m6a a549/m7g
 
       - name: Fix file ownership
         run: sudo chown -R "$(id -u):$(id -g)" .
@@ -83,9 +86,16 @@ jobs:
           git add \
             hek293t/m6a/*_transcriptome.tsv \
             hek293t/m5c/*_genome.tsv hek293t/m5c/*_transcriptome.tsv \
-            hela/m5c/*_genome.tsv hela/m5c/*_transcriptome.tsv \
+            hek293t/m1a/*_transcriptome.tsv \
+            hek293t/m7g/*_transcriptome.tsv \
             hek293t/pseudo-u/*_genome.tsv hek293t/pseudo-u/*_transcriptome.tsv \
+            hela/m5c/*_genome.tsv hela/m5c/*_transcriptome.tsv \
+            hela/m6a/*_transcriptome.tsv \
+            hela/m7g/*_transcriptome.tsv \
+            hela/nm/*_transcriptome.tsv \
             hela/pseudo-u/*_genome.tsv hela/pseudo-u/*_transcriptome.tsv \
+            a549/m6a/*_transcriptome.tsv \
+            a549/m7g/*_transcriptome.tsv \
             a549/pseudo-u/*_genome.tsv a549/pseudo-u/*_transcriptome.tsv
           if git diff --cached --quiet; then
             echo "No changes to commit"
