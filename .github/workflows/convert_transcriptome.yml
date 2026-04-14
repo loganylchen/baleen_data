@@ -79,29 +79,31 @@ jobs:
       - name: Fix file ownership
         run: sudo chown -R "$(id -u):$(id -g)" .
 
+      - name: Compress transcriptome files
+        run: |
+          find . -name '*_transcriptome.tsv' -type f | while read f; do
+            gzip -f "$f"
+            echo "Compressed: $f → ${f}.gz ($(du -h "${f}.gz" | cut -f1))"
+          done
+
       - name: Commit output files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add \
-            hek293t/m6a/*_transcriptome.tsv \
-            hek293t/m5c/*_genome.tsv hek293t/m5c/*_transcriptome.tsv \
-            hek293t/m1a/*_transcriptome.tsv \
-            hek293t/m7g/*_transcriptome.tsv \
-            hek293t/pseudo-u/*_genome.tsv hek293t/pseudo-u/*_transcriptome.tsv \
-            hela/m5c/*_genome.tsv hela/m5c/*_transcriptome.tsv \
-            hela/m6a/*_transcriptome.tsv \
-            hela/m7g/*_transcriptome.tsv \
-            hela/nm/*_transcriptome.tsv \
-            hela/pseudo-u/*_genome.tsv hela/pseudo-u/*_transcriptome.tsv \
-            a549/m6a/*_transcriptome.tsv \
-            a549/m7g/*_transcriptome.tsv \
-            a549/pseudo-u/*_genome.tsv a549/pseudo-u/*_transcriptome.tsv
-          # Remove m6A rmbase transcriptome files (too large for GitHub)
-          git reset HEAD -- \
-            hek293t/m6a/rmbase_transcriptome.tsv \
-            hela/m6a/rmbase_transcriptome.tsv \
-            a549/m6a/rmbase_transcriptome.tsv 2>/dev/null || true
+            hek293t/m6a/*_transcriptome.tsv.gz \
+            hek293t/m5c/*_genome.tsv hek293t/m5c/*_transcriptome.tsv.gz \
+            hek293t/m1a/*_transcriptome.tsv.gz \
+            hek293t/m7g/*_transcriptome.tsv.gz \
+            hek293t/pseudo-u/*_genome.tsv hek293t/pseudo-u/*_transcriptome.tsv.gz \
+            hela/m5c/*_genome.tsv hela/m5c/*_transcriptome.tsv.gz \
+            hela/m6a/*_transcriptome.tsv.gz \
+            hela/m7g/*_transcriptome.tsv.gz \
+            hela/nm/*_transcriptome.tsv.gz \
+            hela/pseudo-u/*_genome.tsv hela/pseudo-u/*_transcriptome.tsv.gz \
+            a549/m6a/*_transcriptome.tsv.gz \
+            a549/m7g/*_transcriptome.tsv.gz \
+            a549/pseudo-u/*_genome.tsv a549/pseudo-u/*_transcriptome.tsv.gz
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
