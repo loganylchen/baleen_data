@@ -97,6 +97,11 @@ jobs:
             a549/m6a/*_transcriptome.tsv \
             a549/m7g/*_transcriptome.tsv \
             a549/pseudo-u/*_genome.tsv a549/pseudo-u/*_transcriptome.tsv
+          # Remove m6A rmbase transcriptome files (too large for GitHub)
+          git reset HEAD -- \
+            hek293t/m6a/rmbase_transcriptome.tsv \
+            hela/m6a/rmbase_transcriptome.tsv \
+            a549/m6a/rmbase_transcriptome.tsv 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
