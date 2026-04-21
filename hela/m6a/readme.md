@@ -1,15 +1,15 @@
-# hek293t/m5c
+# hela/m6a
 
-HEK293T 5-methylcytosine (m5C) benchmark datasets.
+HELA N6-methyladenosine (m6A) benchmark datasets.
 All TSV files share standardized first 5 columns: `chr`, `start`, `end`, `strand`, `label`.
 
 ## Sources
 
 | File | Sites | Label | Description |
 |---|---|---|---|
-| `gse122254_genome.tsv` | 260 | `if m5C site` → 0/1 | GSE122254 HEK293T m5C |
-| `gse225614_genome.tsv` | 2,191 | NA (positive-only) | GSE225614 HEK293T-WT sites (rRNA dropped) |
-| `rmbase_genome.tsv` | 258 | NA (positive-only) | RMBase v3 HEK293T-filtered m5C sites |
+| `ftom_ftop_genome.tsv` | 40,096 | NA (called positives) | GSE211303 FTOm vs FTO+ control, rep1 |
+| `ftom_ivt_genome.tsv` | 69,834 | NA (called positives) | GSE211303 FTOm vs IVT control, rep1 |
+| `rmbase_genome.tsv` | 458,320 | NA (positive-only) | RMBase v3 HeLa-filtered m6A sites |
 
 ## Figures
 
@@ -25,9 +25,9 @@ Site key: `(chr, start, end, strand)`. Jaccard = |A ∩ B| / |A ∪ B|.
 
 | A | B | |A∩B| | Jaccard | |A∩B|/|A| | |A∩B|/|B| |
 |---|---|---|---|---|---|
-| gse122254 | gse225614 | 1 | 0.0004 | 0.004 | 0.000 |
-| gse122254 | rmbase | 3 | 0.0058 | 0.012 | 0.012 |
-| gse225614 | rmbase | 193 | 0.0855 | 0.088 | 0.748 |
+| ftom_ftop | ftom_ivt | 35,352 | 0.4740 | 0.882 | 0.506 |
+| ftom_ftop | rmbase | 24,731 | 0.0522 | 0.617 | 0.054 |
+| ftom_ivt | rmbase | 36,397 | 0.0740 | 0.521 | 0.079 |
 
 ## Regenerating
 

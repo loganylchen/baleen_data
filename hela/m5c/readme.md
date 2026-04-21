@@ -1,17 +1,40 @@
 # hela/m5c
 
-HeLa m5C modification benchmark datasets. All TSV files share standardized first 5 columns: `chr`, `start`, `end`, `strand`, `label`.
+HELA 5-methylcytosine (m5C) benchmark datasets.
+All TSV files share standardized first 5 columns: `chr`, `start`, `end`, `strand`, `label`.
 
-## Source Data
+## Sources
 
-| File | Sites | Coordinates | Label | Description |
-|---|---|---|---|---|
-| `gse225614_genome.tsv` | ~2,700 | Genomic | NA | GSE225614 HeLa-WT sites (rRNA rows dropped) |
-| `gse140995_genome.tsv` | 1,034 | Genomic | NA | GSE140995 transcriptome-wide m5C sites |
-| `gse93749_genome.tsv` | ~16,800 | Genomic | 0/1 | GSE93749 HeLa sites (hg19→hg38 via pyliftover) |
+| File | Sites | Label | Description |
+|---|---|---|---|
+| `gse140995_genome.tsv` | 899 | NA (positive-only) | GSE140995 transcriptome-wide m5C |
+| `gse225614_genome.tsv` | 2,441 | NA (positive-only) | GSE225614 HeLa-WT sites (rRNA dropped) |
+| `gse93749_genome.tsv` | 16,662 | siCTRL Status_rep1: "1"→1, "/"→0 | GSE93749 (hg19 → hg38 via pyliftover) |
+| `rmbase_genome.tsv` | 686 | NA (positive-only) | RMBase v3 HeLa-filtered m5C sites |
 
-## Raw Files
+## Figures
 
-- `GSE225614_HeLa-WT_sites.tsv` — Rows with chromosome="." are rRNA (dropped).
-- `GSE140995_transcriptome-wide_sites.xlsx` — Already 0-based BED coordinates with chr prefix.
-- `GSE93749_hg19_Human_m5C_sites_information.xls` — hg19 coordinates, lifted over to hg38. Label from siCTRL Status_rep1: "1"→1, "/"→0.
+![counts](figures/counts.png)
+
+![jaccard](figures/jaccard.png)
+
+![upset](figures/upset.png)
+
+## Pairwise overlap
+
+Site key: `(chr, start, end, strand)`. Jaccard = |A ∩ B| / |A ∪ B|.
+
+| A | B | |A∩B| | Jaccard | |A∩B|/|A| | |A∩B|/|B| |
+|---|---|---|---|---|---|
+| gse140995 | gse225614 | 458 | 0.1589 | 0.509 | 0.188 |
+| gse140995 | gse93749 | 423 | 0.0247 | 0.471 | 0.025 |
+| gse140995 | rmbase | 311 | 0.2441 | 0.346 | 0.453 |
+| gse225614 | gse93749 | 703 | 0.0382 | 0.288 | 0.042 |
+| gse225614 | rmbase | 452 | 0.1690 | 0.185 | 0.659 |
+| gse93749 | rmbase | 448 | 0.0265 | 0.027 | 0.653 |
+
+## Regenerating
+
+```bash
+python analyze_overlap.py   # from repo root
+```

@@ -1,13 +1,22 @@
 # a549/pseudo-u
 
-A549 pseudo-uridine (BID-seq) benchmark dataset. All TSV files share standardized first 5 columns: `chr`, `start`, `end`, `strand`, `label`.
+A549 Pseudouridine (Ψ) benchmark datasets.
+All TSV files share standardized first 5 columns: `chr`, `start`, `end`, `strand`, `label`.
 
-## Source Data
+## Sources
 
-| File | Sites | Coordinates | Label | Description |
-|---|---|---|---|---|
-| `bidseq_genome.tsv` | 922 | Genomic | NA | GSE179798 BID-seq WT mRNA sites |
+| File | Sites | Label | Description |
+|---|---|---|---|
+| `bidseq_genome.tsv` | 922 | NA (positive-only) | GSE179798 A549 mRNA WT BID-seq |
 
-## Raw Files
+## Figures
 
-- `GSE179798_A549_mRNA_WT_BID-seq.xlsx` — Header at Excel row 4. 1-based positions with chr prefix.
+![counts](figures/counts.png)
+
+_Only one source — no pairwise overlap._
+
+## Regenerating
+
+```bash
+python analyze_overlap.py   # from repo root
+```

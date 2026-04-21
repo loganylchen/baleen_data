@@ -1,13 +1,13 @@
-# hela/pseudo-u
+# hela/nm
 
-HELA Pseudouridine (Ψ) benchmark datasets.
+HELA 2′-O-methylation (Nm) benchmark datasets.
 All TSV files share standardized first 5 columns: `chr`, `start`, `end`, `strand`, `label`.
 
 ## Sources
 
 | File | Sites | Label | Description |
 |---|---|---|---|
-| `bidseq_genome.tsv` | 575 | NA (positive-only) | GSE179798 HeLa mRNA WT BID-seq |
+| `rmbase_genome.tsv` | 2,887 | NA (positive-only) | RMBase v3 HeLa-filtered 2′-O-methyl sites |
 
 ## Figures
 

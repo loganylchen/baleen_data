@@ -1,13 +1,13 @@
-# hela/pseudo-u
+# hek293t/m1a
 
-HELA Pseudouridine (Ψ) benchmark datasets.
+HEK293T N1-methyladenosine (m1A) benchmark datasets.
 All TSV files share standardized first 5 columns: `chr`, `start`, `end`, `strand`, `label`.
 
 ## Sources
 
 | File | Sites | Label | Description |
 |---|---|---|---|
-| `bidseq_genome.tsv` | 575 | NA (positive-only) | GSE179798 HeLa mRNA WT BID-seq |
+| `rmbase_genome.tsv` | 1,014 | NA (positive-only) | RMBase v3 HEK293T-filtered m1A sites |
 
 ## Figures
 

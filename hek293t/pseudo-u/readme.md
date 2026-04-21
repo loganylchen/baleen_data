@@ -1,13 +1,22 @@
 # hek293t/pseudo-u
 
-HEK293T pseudo-uridine (BID-seq) benchmark dataset. All TSV files share standardized first 5 columns: `chr`, `start`, `end`, `strand`, `label`.
+HEK293T Pseudouridine (Ψ) benchmark datasets.
+All TSV files share standardized first 5 columns: `chr`, `start`, `end`, `strand`, `label`.
 
-## Source Data
+## Sources
 
-| File | Sites | Coordinates | Label | Description |
-|---|---|---|---|---|
-| `bidseq_genome.tsv` | 543 | Genomic | NA | GSE179798 BID-seq WT mRNA sites |
+| File | Sites | Label | Description |
+|---|---|---|---|
+| `bidseq_genome.tsv` | 543 | NA (positive-only) | GSE179798 HEK293T mRNA WT BID-seq |
 
-## Raw Files
+## Figures
 
-- `GSE179798_HEK293T_mRNA_WT_BID-seq.xlsx` — Header at Excel row 4. 1-based positions with chr prefix.
+![counts](figures/counts.png)
+
+_Only one source — no pairwise overlap._
+
+## Regenerating
+
+```bash
+python analyze_overlap.py   # from repo root
+```

@@ -1,13 +1,13 @@
-# hela/pseudo-u
+# hek293t/m7g
 
-HELA Pseudouridine (Ψ) benchmark datasets.
+HEK293T N7-methylguanosine (m7G) benchmark datasets.
 All TSV files share standardized first 5 columns: `chr`, `start`, `end`, `strand`, `label`.
 
 ## Sources
 
 | File | Sites | Label | Description |
 |---|---|---|---|
-| `bidseq_genome.tsv` | 575 | NA (positive-only) | GSE179798 HeLa mRNA WT BID-seq |
+| `rmbase_genome.tsv` | 21 | NA (positive-only) | RMBase v3 HEK293T-filtered m7G sites |
 
 ## Figures
 
