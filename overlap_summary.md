@@ -15,7 +15,7 @@ Site key: `(chr, start, end, strand)`. Jaccard = |A ∩ B| / |A ∪ B|.
 | rmbase | 359,318 |
 | xpore | 15,073 |
 
-| A | B | |A∩B| | Jaccard | |A∩B|/|A| | |A∩B|/|B| |
+| A | B | A∩B | Jaccard | A∩B/A | A∩B/B |
 |---|---|---|---|---|---|
 | glory | gt_extend | 21,408 | 0.1083 | 0.126 | 0.439 |
 | glory | gt | 18,915 | 0.0967 | 0.111 | 0.428 |
@@ -54,7 +54,7 @@ Site key: `(chr, start, end, strand)`. Jaccard = |A ∩ B| / |A ∪ B|.
 | gse225614 | 2,191 |
 | rmbase | 258 |
 
-| A | B | |A∩B| | Jaccard | |A∩B|/|A| | |A∩B|/|B| |
+| A | B | A∩B | Jaccard | A∩B/A | A∩B/B |
 |---|---|---|---|---|---|
 | gse122254 | gse225614 | 1 | 0.0004 | 0.004 | 0.000 |
 | gse122254 | rmbase | 3 | 0.0058 | 0.012 | 0.012 |
@@ -86,7 +86,7 @@ Site key: `(chr, start, end, strand)`. Jaccard = |A ∩ B| / |A ∪ B|.
 | ftom_ivt | 69,834 |
 | rmbase | 458,320 |
 
-| A | B | |A∩B| | Jaccard | |A∩B|/|A| | |A∩B|/|B| |
+| A | B | A∩B | Jaccard | A∩B/A | A∩B/B |
 |---|---|---|---|---|---|
 | ftom_ftop | ftom_ivt | 35,352 | 0.4740 | 0.882 | 0.506 |
 | ftom_ftop | rmbase | 24,731 | 0.0522 | 0.617 | 0.054 |
@@ -101,7 +101,7 @@ Site key: `(chr, start, end, strand)`. Jaccard = |A ∩ B| / |A ∪ B|.
 | gse93749 | 16,662 |
 | rmbase | 686 |
 
-| A | B | |A∩B| | Jaccard | |A∩B|/|A| | |A∩B|/|B| |
+| A | B | A∩B | Jaccard | A∩B/A | A∩B/B |
 |---|---|---|---|---|---|
 | gse140995 | gse225614 | 458 | 0.1589 | 0.509 | 0.188 |
 | gse140995 | gse93749 | 423 | 0.0247 | 0.471 | 0.025 |

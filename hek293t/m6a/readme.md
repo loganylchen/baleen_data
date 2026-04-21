@@ -28,7 +28,7 @@ All TSV files share standardized first 5 columns: `chr`, `start`, `end`, `strand
 
 Site key: `(chr, start, end, strand)`. Jaccard = |A ∩ B| / |A ∪ B|.
 
-| A | B | |A∩B| | Jaccard | |A∩B|/|A| | |A∩B|/|B| |
+| A | B | A∩B | Jaccard | A∩B/A | A∩B/B |
 |---|---|---|---|---|---|
 | glory | gt_extend | 21,408 | 0.1083 | 0.126 | 0.439 |
 | glory | gt | 18,915 | 0.0967 | 0.111 | 0.428 |

@@ -195,7 +195,7 @@ def build_readme(cell, mod, sources, pairwise_rows, fig_rel_dir):
                   'Site key: `(chr, start, end, strand)`. Jaccard = |A ∩ B| / |A ∪ B|.',
                   '',
                   md_table(pairwise_rows,
-                           ['A', 'B', '|A∩B|', 'Jaccard', '|A∩B|/|A|', '|A∩B|/|B|']),
+                           ['A', 'B', 'A∩B', 'Jaccard', 'A∩B/A', 'A∩B/B']),
                   '']
     else:
         lines += ['_Only one source — no pairwise overlap._', '']
@@ -270,7 +270,7 @@ def main():
             md_parts.append('')
             if pairwise_rows:
                 md_parts.append(md_table(pairwise_rows,
-                    ['A', 'B', '|A∩B|', 'Jaccard', '|A∩B|/|A|', '|A∩B|/|B|']))
+                    ['A', 'B', 'A∩B', 'Jaccard', 'A∩B/A', 'A∩B/B']))
                 md_parts.append('')
 
     OUT_MD.write_text('\n'.join(md_parts) + '\n')

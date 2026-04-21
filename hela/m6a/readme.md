@@ -23,7 +23,7 @@ All TSV files share standardized first 5 columns: `chr`, `start`, `end`, `strand
 
 Site key: `(chr, start, end, strand)`. Jaccard = |A ∩ B| / |A ∪ B|.
 
-| A | B | |A∩B| | Jaccard | |A∩B|/|A| | |A∩B|/|B| |
+| A | B | A∩B | Jaccard | A∩B/A | A∩B/B |
 |---|---|---|---|---|---|
 | ftom_ftop | ftom_ivt | 35,352 | 0.4740 | 0.882 | 0.506 |
 | ftom_ftop | rmbase | 24,731 | 0.0522 | 0.617 | 0.054 |
